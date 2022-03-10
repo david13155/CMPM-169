@@ -1,0 +1,81 @@
+//https://editor.p5js.org/tlu30/full/LwU9wdCtO
+function preload (){
+  font = loadFont('NotoSansJP-Bold.otf')
+  song = loadSound('rasen_shuriken.mp3')
+}
+
+let x = 0;
+let y = 0;
+let spacing = 15;
+let angle = 0.0;
+let speed = 0.05; 
+
+function setup() {
+  createCanvas(windowWidth, windowHeight);
+  background(255);
+}
+
+function draw() {
+  background(255)
+  strokeWeight(15)
+  stroke(0)
+  fill(255, 255, 130);
+  let A = createVector(windowWidth/2 + 75/2, windowHeight/4 + 75);
+  let B = createVector(mouseX, mouseY);
+  let P = B.sub(A).normalize().mult(175).add(A);
+  rect(windowWidth/2, windowHeight/4, 75, 75)
+  line(A.x, A.y, P.x, P.y);
+  line(windowWidth/2 + 75/2, windowHeight/4 + 75 , windowWidth/2 + 75/2, windowHeight/4 + 275);
+  line(windowWidth/2 + 75/2, windowHeight/4 + 75 , windowWidth/2 - 75, windowHeight/4 + 200);
+  line(windowWidth/2 + 75/2, windowHeight/4 + 275, windowWidth/2 - 75/2, windowHeight/4 + 500);
+  line(windowWidth/2 + 75/2, windowHeight/4 + 275, windowWidth/2 + 150, windowHeight/4 + 500);
+  
+  textFont(font);
+  textSize(width/10)
+  textAlign(CENTER, CENTER)
+  fill(242, 163, 11);
+  if(song.isPlaying()){
+    text('風遁・螺旋手裏剣!',600 ,1000)
+  }
+       
+  let shearAmountX = map(mouseX, 0 , width, -HALF_PI, HALF_PI)
+  let shearAmountY = map(mouseY, 0 , height, -HALF_PI, HALF_PI)
+  noStroke()
+  shearX(shearAmountX)
+  shearY(shearAmountY)
+  translate(windowWidth/2, windowHeight/2)
+  fill(123,211,247)
+  if(song.isPlaying()){
+    pattern(1)
+  }
+
+}
+
+function pattern (a){
+  translate(a, a)
+  rotate(angle)
+  for(let i=0; i<10; i++){
+    push()
+    rotate(i*TWO_PI/10)
+    translate(0, 50 * a)
+    ellipse(0,0,50,50)
+    pop()
+  }
+  
+  angle += speed
+  
+  scale(a*0.618)
+  
+  a++
+  
+  if(a == 5){
+    return;
+  }
+   pattern(a);
+}
+
+function mouseClicked() {
+  song.play();
+
+  
+}
